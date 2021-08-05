@@ -24,6 +24,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'responsavel')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'consultor')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'migracao')->dropDownList(
+        ['Não realizada', 'Documento Pendente', 'Em andamento', 'Concluida'],
+    ) ?>
+
     <?= $form->field($model, 'telefone')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'cadastrante_id')->dropDownList(
@@ -41,13 +47,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'cnpj')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cota_xml')->textInput(['type' => 'number']) ?>
+    <?= $form->field($model, 'cota_xml')->textInput(['type' => 'number', 'value' => 0]) ?>
 
-    <?= $form->field($model, 'cota_ged')->textInput(['type' => 'number']) ?>
+    <?= $form->field($model, 'cota_ged')->textInput(['type' => 'number', 'value' => 0]) ?>
 
-    <?= $form->field($model, 'cota_bipagem')->textInput(['type' => 'number']) ?>
+    <?= $form->field($model, 'cota_bipagem')->textInput(['type' => 'number', 'value' => 0]) ?>
 
-    <?= $form->field($model, 'vez')->textInput(['type' => 'number', 'min' => '0', 'max' => '7']) ?>
+    <?= $form->field($model, 'risco_cancelamento')->dropDownList(
+        ['Baixo', 'Médio', 'Alto'],
+    ) ?>
+
+    <?= $form->field($model, 'vez')->textInput(['type' => 'number', 'min' => '0', 'max' => '7', 'value' => '0']) ?>
 
     <?= $form->field($model, 'comentario')->textarea(['rows' => 6]) ?>
 

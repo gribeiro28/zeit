@@ -47,12 +47,12 @@ class Implantacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['data', 'responsavel', 'telefone', 'cadastrante_id', 'email_responsavel', 'razao_social', 'estado_implantacao_id', 'hora', 'cota_xml'], 'required'],
+            [[/*'data',*/ 'responsavel', 'telefone', 'cadastrante_id', 'email_responsavel', 'razao_social', 'estado_implantacao_id', 'hora', 'cota_xml'], 'required'],
             [['data'], 'date', 'format' => 'php:Y-m-d H:i:s'],
             [['data'], 'isNotWeekend'],
             [['data'], 'horarioDisponivel'],
             [['cadastrante_id', 'atendente_id', 'estado_implantacao_id', 'cota_bipagem', 'cota_ged', 'cota_xml'], 'integer'],
-            [['comentario'], 'string'],
+            [['comentario', 'migracao', 'consultor'], 'string'],
             [['responsavel', 'razao_social'], 'string', 'max' => 256],
             [['telefone', 'celular'], 'string', 'max' => 11],
             [['email_responsavel'], 'string', 'max' => 256],

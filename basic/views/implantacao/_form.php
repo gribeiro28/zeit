@@ -14,19 +14,28 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <div id="data-agenda">
-        <?="Agendamento de implantação para: <span>".Yii::$app->formatter->format($data, 'date')."</span>" ?>
+        <?= "Agendamento de implantação para: <span>" . Yii::$app->formatter->format($data, 'date') . "</span>" ?>
     </div>
-    <?= Html::error($model, 'data', ['class'=>'error-summary-nopd']); ?>
+    <?= Html::error($model, 'data', ['class' => 'error-summary-nopd']); ?>
 
     <?= $form->field($model, 'hora')->dropDownList(
-                $horarios) ?>
+        $horarios
+    ) ?>
 
     <?= $form->field($model, 'responsavel')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'consultor')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'migracao')->dropDownList(
+        ['Não realizada', 'Documento Pendente', 'Em andamento', 'Concluida'],
+    ) ?>
 
     <?= $form->field($model, 'telefone')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'cadastrante_id')->dropDownList(
-                $cadastrante, ['readonly'=>true]) ?>
+        $cadastrante,
+        ['readonly' => true]
+    ) ?>
 
     <?= $form->field($model, 'email_responsavel')->textInput(['maxlength' => true]) ?>
 

@@ -47,15 +47,15 @@ class Qualidade extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[/*'data',*/ 'responsavel', 'telefone', 'cadastrante_id', 'email_responsavel', 'razao_social', 'estado_implantacao_id', 'hora', 'cota_xml'], 'required'],
+            [[/*'data',*/'responsavel', 'telefone', 'cadastrante_id', 'email_responsavel', 'razao_social', 'estado_implantacao_id', 'hora'], 'required'],
             [['data'], 'date', 'format' => 'php:Y-m-d H:i:s'],
             [['data'], 'isNotWeekend'],
-            [['data'], 'horarioDisponivel'],
+            //[['data'], 'horarioDisponivel'],
             [['cadastrante_id', 'atendente_id', 'vez', 'cota_bipagem', 'cota_ged', 'cota_xml'], 'integer'],
-            [['comentario'], 'string'],
+            [['comentario', 'migracao', 'consultor', 'risco_cancelamento'], 'string'],
             [['responsavel', 'razao_social'], 'string', 'max' => 256],
             [['telefone', 'celular'], 'string', 'max' => 11],
-            [['email_responsavel', 'nome'], 'string', 'max' => 256],
+            [['email_responsavel', 'nome', 'consultor'], 'string', 'max' => 256],
             [['cnpj'], 'string', 'max' => 14],
             [['cadastrante_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['cadastrante_id' => 'id']],
             [['atendente_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['atendente_id' => 'id']],
@@ -152,11 +152,11 @@ class Qualidade extends \yii\db\ActiveRecord
                 $horarios[$hora->horario] = $hora->horario;
             }
         }
-
+/*
         if (count($horarios) == 0) {
             throw new ForbiddenHttpException("Essa data está indisponível para cadastro.");
         }
-
+*/
         return $horarios;
     }
 

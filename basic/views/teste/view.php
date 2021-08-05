@@ -36,6 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'data',
             'responsavel',
+            'consultor',
+            'migracao',
             'telefone',
             'nome',
             [
@@ -53,6 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'cota_xml',
             'cota_bipagem',
             'cota_ged',
+            'risco_cancelamento',
             'comentario:ntext',
             [
                 'label' => 'Estado Atual',

@@ -36,6 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'data',
             'responsavel',
+            'consultor',
+            'migracao',
             'telefone',
             [
                 'label' => 'Cadastrante',

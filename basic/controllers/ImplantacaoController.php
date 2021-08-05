@@ -139,6 +139,8 @@ class ImplantacaoController extends Controller
         ]);
     }
 
+    
+
     /**
      * Updates an existing Implantacao model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -150,13 +152,52 @@ class ImplantacaoController extends Controller
     {
         $model = $this->findModel($id);
         $model->hora = $model->data;
-        //var_dump('<br><br><br><br><br><br><br>');
+
+
+
+        /*if($model->data == ''){
+            
+        }*/
 
         if (
             !Usuario::isRole(['Vendedor'], Yii::$app->user->identity) ||
             (Usuario::isRole(['Vendedor'], Yii::$app->user->identity) && $model->cadastrante_id == Yii::$app->user->identity->id)
         ) {
             if ($model->load(Yii::$app->request->post())) {
+
+                if ($model->data == '') {
+                    $model->data = $model->oldAttributes['data'];
+                } else if ($model->data == "") {
+                    $model->data = $model->oldAttributes['data'];
+                } else if ($model->data == 'NULL') {
+                    $model->data = $model->oldAttributes['data'];
+                } else if ($model->data == 'null') {
+                    $model->data = $model->oldAttributes['data'];
+                }
+
+                switch ($model->hora) {
+                    case 0:
+                        $horarioD = '08:00:00';
+                        break;
+                    case 1:
+                        $horarioD = '09:00:00';
+                        break;
+                    case 2:
+                        $horarioD = '10:00:00';
+                        break;
+                    case 3:
+                        $horarioD = '13:00:00';
+                        break;
+                    case 4:
+                        $horarioD = '14:00:00';
+                        break;
+                    case 5:
+                        $horarioD = '15:00:00';
+                        break;
+                    default:
+                        break;
+                }
+
                 if ("Realizada" == EstadoImplantacao::allAsMap()[$model->estado_implantacao_id]) {
                     $date = new DateTime($model->data);
                     $date->modify('+1 day');
@@ -168,6 +209,9 @@ class ImplantacaoController extends Controller
                         $date->modify('+2 day');
                     }
                     $data = $date->format('d/m/Y');
+
+                    $model->data = $model->oldAttributes['data'];
+
                     try {
                         $mail = new PHPMailer(true);
                         //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
@@ -186,43 +230,89 @@ class ImplantacaoController extends Controller
                         $mail->AltBody = 'Chegou o email do bagulho la';
 
                         //if ($mail->send()) {
-                            if ($model->save()) {
-                                $modelQualidade = new Qualidade();
-                                $data = $date->format('Y-m-d');
-                                $modelQualidade->data = $data . ' 00:00:00';
-                                $modelQualidade->hora = $model->data;
-                                $modelQualidade->responsavel = $model->responsavel;
-                                $modelQualidade->telefone = $model->telefone;
-                                $modelQualidade->cadastrante_id = $model->cadastrante_id;
-                                $modelQualidade->atendente_id = $model->atendente_id;
-                                $modelQualidade->email_responsavel = $model->email_responsavel;
-                                $modelQualidade->celular = $model->celular;
-                                $modelQualidade->razao_social = $model->razao_social;
-                                $modelQualidade->cnpj = $model->cnpj;
-                                $modelQualidade->comentario = $model->comentario;
-                                $modelQualidade->vez = 0;
-                                //$modelQualidade->nome = 0;
-                                $modelQualidade->cota_xml = 0;
-                                $modelQualidade->cota_bipagem = 0;
-                                $modelQualidade->cota_ged = 0;
-                                $modelQualidade->estado_implantacao_id = EstadoImplantacao::find()->where(['nome' => 'Pendente'])->one()->id;
+                        if ($model->save()) {
+                            $modelQualidade = new Qualidade();
+                            $data = $date->format('Y-m-d');
+                            $modelQualidade->data = $data . ' 00:00:00';
+                            $modelQualidade->hora = $model->data;
+                            $modelQualidade->responsavel = $model->responsavel;
+                            $modelQualidade->telefone = $model->telefone;
+                            $modelQualidade->cadastrante_id = $model->cadastrante_id;
+                            $modelQualidade->atendente_id = $model->atendente_id;
+                            $modelQualidade->email_responsavel = $model->email_responsavel;
+                            $modelQualidade->celular = $model->celular;
+                            $modelQualidade->razao_social = $model->razao_social;
+                            $modelQualidade->cnpj = $model->cnpj;
+                            $modelQualidade->comentario = $model->comentario;
+                            $modelQualidade->vez = 0;
+                            //$modelQualidade->nome = 0;
+                            $modelQualidade->cota_xml = 0;
+                            $modelQualidade->cota_bipagem = 0;
+                            $modelQualidade->cota_ged = 0;
+                            $modelQualidade->estado_implantacao_id = EstadoImplantacao::find()->where(['nome' => 'Pendente'])->one()->id;
 
-                                var_dump('<pre>');
-                                /*var_dump($modelQualidade);
-                                var_dump('<br><br>');
-                                var_dump($modelQualidade->validate());*/
-                                var_dump('</pre>');
+                            var_dump('<pre>');
+                            var_dump($modelQualidade);
+                            var_dump('<br><br>');
+                            var_dump($modelQualidade->validate());
+                            var_dump('</pre>');
 
-                                if ($modelQualidade->save()) {
-                                    return $this->redirect(['view', 'id' => $model->id]);
-                                }
+                            if ($modelQualidade->save()) {
+                                return $this->redirect(['view', 'id' => $model->id]);
                             }
+                        }
                         //}
                     } catch (Exception $e) {
                         var_dump("teste");
                         var_dump($mail->ErrorInfo);
                     }
+                } else if ("Reagendada" == EstadoImplantacao::allAsMap()[$model->estado_implantacao_id]) {
+
+                    $model->data = $model->data . ' ' . $horarioD;
+
+                    $dataReagendada = $model->data;
+
+                    /*var_dump('' . $model->data . '<br>');
+                    var_dump('' . $dataReagendada);*/
+
+                    /*if ($model->save()) {
+                        $modelQualidade = new Implantacao();
+
+                        $modelQualidade->data = $dataReagendada;
+                        $modelQualidade->hora = $model->data;
+                        $modelQualidade->responsavel = $model->responsavel;
+                        $modelQualidade->telefone = $model->telefone;
+                        $modelQualidade->cadastrante_id = $model->cadastrante_id;
+                        $modelQualidade->atendente_id = $model->atendente_id;
+                        $modelQualidade->email_responsavel = $model->email_responsavel;
+                        $modelQualidade->celular = $model->celular;
+                        $modelQualidade->razao_social = $model->razao_social;
+                        $modelQualidade->cnpj = $model->cnpj;
+                        $modelQualidade->comentario = $model->comentario;
+                        $modelQualidade->cota_xml = 0;
+                        $modelQualidade->cota_bipagem = 0;
+                        $modelQualidade->cota_ged = 0;
+                        $modelQualidade->estado_implantacao_id = EstadoImplantacao::find()->where(['nome' => 'Pendente'])->one()->id;
+
+                        var_dump($modelQualidade->data);
+
+
+                        /*if ($modelQualidade->save()) {
+                            return $this->redirect(['view', 'id' => $model->id]);
+                        }
+                    }*/
+
+                    if ($model->save()) {
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+
+
+                    //if ($model->save()) {
+                    //return $this->redirect(['view', 'id' => $model->id]);
+                    //}
                 } else {
+
+
                     if ($model->save()) {
                         return $this->redirect(['view', 'id' => $model->id]);
                     }
