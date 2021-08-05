@@ -278,8 +278,8 @@ class TesteController extends Controller
                     var_dump($model->oldAttributes['data']);
                     $model->data = $model->oldAttributes['data'];
                     var_dump('</pre>');
-                    /*var_dump('' . $model->data . '<br>');
-                    var_dump('' . $dataReagendada);*/
+                    var_dump('' . $model->data . '<br>');
+                    var_dump('' . $dataReagendada);
 
                     if ($model->save()) {
                         $modelQualidade = new Qualidade();
@@ -301,12 +301,12 @@ class TesteController extends Controller
                         $modelQualidade->cota_ged = 0;
                         $modelQualidade->estado_implantacao_id = EstadoImplantacao::find()->where(['nome' => 'Pendente'])->one()->id;
 
-                        var_dump($modelQualidade->data);
+                        var_dump($modelQualidade->validate());
 
 
-                        /*if ($modelQualidade->save()) {
+                        if ($modelQualidade->save()) {
                             return $this->redirect(['view', 'id' => $model->id]);
-                        }*/
+                        }
                     }
 
                     /*if ($model->save()) {
