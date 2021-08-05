@@ -251,6 +251,9 @@ class ImplantacaoController extends Controller
                             $modelQualidade->cota_ged = 0;
                             $modelQualidade->estado_implantacao_id = EstadoImplantacao::find()->where(['nome' => 'Pendente'])->one()->id;
 
+                            $modelQualidade->consultor =  $model->consultor;
+                            $modelQualidade->migracao =  $model->migracao;
+                        
                             var_dump('<pre>');
                             var_dump($modelQualidade);
                             var_dump('<br><br>');
@@ -269,38 +272,6 @@ class ImplantacaoController extends Controller
                 } else if ("Reagendada" == EstadoImplantacao::allAsMap()[$model->estado_implantacao_id]) {
 
                     $model->data = $model->data . ' ' . $horarioD;
-
-                    $dataReagendada = $model->data;
-
-                    /*var_dump('' . $model->data . '<br>');
-                    var_dump('' . $dataReagendada);*/
-
-                    /*if ($model->save()) {
-                        $modelQualidade = new Implantacao();
-
-                        $modelQualidade->data = $dataReagendada;
-                        $modelQualidade->hora = $model->data;
-                        $modelQualidade->responsavel = $model->responsavel;
-                        $modelQualidade->telefone = $model->telefone;
-                        $modelQualidade->cadastrante_id = $model->cadastrante_id;
-                        $modelQualidade->atendente_id = $model->atendente_id;
-                        $modelQualidade->email_responsavel = $model->email_responsavel;
-                        $modelQualidade->celular = $model->celular;
-                        $modelQualidade->razao_social = $model->razao_social;
-                        $modelQualidade->cnpj = $model->cnpj;
-                        $modelQualidade->comentario = $model->comentario;
-                        $modelQualidade->cota_xml = 0;
-                        $modelQualidade->cota_bipagem = 0;
-                        $modelQualidade->cota_ged = 0;
-                        $modelQualidade->estado_implantacao_id = EstadoImplantacao::find()->where(['nome' => 'Pendente'])->one()->id;
-
-                        var_dump($modelQualidade->data);
-
-
-                        /*if ($modelQualidade->save()) {
-                            return $this->redirect(['view', 'id' => $model->id]);
-                        }
-                    }*/
 
                     if ($model->save()) {
                         return $this->redirect(['view', 'id' => $model->id]);

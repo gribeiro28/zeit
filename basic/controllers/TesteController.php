@@ -169,6 +169,23 @@ class TesteController extends Controller
 
                 var_dump("<br><br><br><br>");
 
+                $risco = '';
+
+                switch ($model->risco_cancelamento) {
+                    case 0:
+                        $risco = 'Baixo';
+                        break;
+                    case 1:
+                        $risco = 'Medio';
+                        break;
+                    case 2:
+                        $risco = 'Alto';
+                        break;
+                    default:
+                        $risco = 'Baixo';
+                        break;
+                }
+
                 if ("Realizada" == EstadoImplantacao::allAsMap()[$model->estado_implantacao_id]) {
                     //$model->data = '2020-06-29';
 
@@ -248,9 +265,15 @@ class TesteController extends Controller
                             $modelQualidade->cnpj = $model->cnpj;
                             $modelQualidade->comentario = $model->comentario;
                             $modelQualidade->vez = $vez;
-                            $modelQualidade->cota_xml = 0;
-                            $modelQualidade->cota_bipagem = 0;
-                            $modelQualidade->cota_ged = 0;
+                            $modelQualidade->cota_xml = $model->cota_xml;
+                            $modelQualidade->cota_bipagem = $model->cota_bipagem;
+                            $modelQualidade->cota_ged = $model->cota_ged;
+
+                            $modelQualidade->risco_cancelamento = $risco;
+                            $modelQualidade->consultor =  $model->consultor;
+                            $modelQualidade->migracao =  $model->migracao;
+                            $modelQualidade->nome = $model->nome;
+
                             $modelQualidade->estado_implantacao_id = EstadoImplantacao::find()->where(['nome' => 'Pendente'])->one()->id;
 
                             var_dump('<pre>');
@@ -300,6 +323,11 @@ class TesteController extends Controller
                         $modelQualidade->cota_bipagem = 0;
                         $modelQualidade->cota_ged = 0;
                         $modelQualidade->estado_implantacao_id = EstadoImplantacao::find()->where(['nome' => 'Pendente'])->one()->id;
+
+                        $modelQualidade->risco_cancelamento = $risco;
+                        $modelQualidade->consultor =  $model->consultor;
+                        $modelQualidade->migracao =  $model->migracao;
+                        $modelQualidade->nome = $model->nome;
 
                         var_dump($modelQualidade->validate());
 

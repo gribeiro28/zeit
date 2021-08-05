@@ -47,7 +47,7 @@ class Implantacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[/*'data',*/ 'responsavel', 'telefone', 'cadastrante_id', 'email_responsavel', 'razao_social', 'estado_implantacao_id', 'hora', 'cota_xml'], 'required'],
+            [[/*'data',*/'responsavel', 'telefone', 'cadastrante_id', 'email_responsavel', 'razao_social', 'estado_implantacao_id', 'hora', 'cota_xml'], 'required'],
             [['data'], 'date', 'format' => 'php:Y-m-d H:i:s'],
             [['data'], 'isNotWeekend'],
             [['data'], 'horarioDisponivel'],
